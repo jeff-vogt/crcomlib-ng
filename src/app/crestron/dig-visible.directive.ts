@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Input, OnInit, OnDestroy} from '@angular/core';
-import { CrComService } from './crcom.service';
 declare var CrComLib: any;
 
 @Directive({
@@ -10,18 +9,18 @@ export class DigVisibleDirective implements OnInit, OnDestroy{
 
   @Input('DigVisible') join: number;
 
-  constructor(private el: ElementRef, private crcom: CrComService) {  }
+  constructor(private el: ElementRef ) {  }
 
   ngOnInit() {
-    this.setVisibility();
-    this.crcom.update.subscribe(() => this.setVisibility());
+    this.setVisibility(CrComLib.getState('b', String(this.join)));
+    CrComLib.subscribeState('b', String(this.join), (v) => { this.setVisibility(v); } );
   }
   ngOnDestroy() {
-    this.crcom.update.unsubscribe();
+
   }
 
-  setVisibility() {
-    if (this.crcom.digFB[this.join] === true) {
+  setVisibility(visJoin: boolean) {
+    if (visJoin) {
       this.el.nativeElement.style.visibility = 'visible';
     }
     else{

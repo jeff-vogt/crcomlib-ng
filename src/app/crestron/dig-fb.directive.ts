@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Input, OnInit, OnDestroy} from '@angular/core';
-import { CrComService } from './crcom.service';
 declare var CrComLib: any;
 
 @Directive({
@@ -10,17 +9,16 @@ export class DigFbDirective implements OnInit, OnDestroy{
 
   @Input('DigFB') join: number;
 
-  constructor(private el: ElementRef, private crcom: CrComService) {  }
+  constructor(private el: ElementRef ) {  }
 
   ngOnInit() {
-    this.setFB();
-    this.crcom.update.subscribe(() => this.setFB());
+    this.setFB(CrComLib.getState('b', String(this.join)));
+    CrComLib.subscribeState('b', String(this.join), (v) => { this.setFB(v); } );
   }
   ngOnDestroy() {
-    this.crcom.update.unsubscribe();
   }
-  setFB(){
-    if (this.crcom.digFB[this.join] === true) {
+  setFB(fbJoin: boolean){
+    if (fbJoin) {
       if (!this.el.nativeElement.classList.contains('active')){
         this.el.nativeElement.classList.add('active');
       }

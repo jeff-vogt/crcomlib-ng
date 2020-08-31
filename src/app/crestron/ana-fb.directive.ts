@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Input, OnInit, OnDestroy} from '@angular/core';
-import { CrComService } from './crcom.service';
 declare var CrComLib: any;
 
 @Directive({
@@ -10,14 +9,12 @@ export class AnaFbDirective implements OnInit, OnDestroy{
 
   @Input('AnaFB') join: number;
 
-  constructor(private el: ElementRef, private crcom: CrComService) { }
+  constructor(private el: ElementRef ) { }
   ngOnInit() {
-    this.el.nativeElement.value = this.crcom.anaFB[this.join];
-    this.crcom.update.subscribe(() => {
-      this.el.nativeElement.value = this.crcom.anaFB[this.join];
-    });
+    CrComLib.subscribeState('n', String(this.join), (v) => { this.el.nativeElement.value = v; } );
+    this.el.nativeElement.value = CrComLib.getState('n', String(this.join));
   }
   ngOnDestroy() {
-    this.crcom.update.unsubscribe();
+    // CrComLib.unSubscribeState('n', String(this.join));
   }
 }

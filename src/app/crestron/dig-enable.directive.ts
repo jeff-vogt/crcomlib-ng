@@ -1,5 +1,4 @@
 import { Directive, ElementRef, Input, OnInit, OnDestroy} from '@angular/core';
-import { CrComService } from './crcom.service';
 declare var CrComLib: any;
 
 @Directive({
@@ -10,18 +9,18 @@ export class DigEnableDirective implements OnInit, OnDestroy{
 
   @Input('DigEnable') join: number;
 
-  constructor(private el: ElementRef, private crcom: CrComService) {  }
+  constructor(private el: ElementRef ) {  }
 
   ngOnInit() {
-    this.setEnabled();
-    this.crcom.update.subscribe(() => this.setEnabled());
+    this.setEnabled(CrComLib.getState('b', String(this.join)));
+    CrComLib.subscribeState('b', String(this.join), (v) => { this.setEnabled(v); } );
   }
   ngOnDestroy() {
-    this.crcom.update.unsubscribe();
+
   }
 
-  setEnabled() {
-    if (this.crcom.digFB[this.join] === true) {
+  setEnabled(enJoin: boolean) {
+    if (enJoin) {
       this.el.nativeElement.disabled = false;
     }
     else{

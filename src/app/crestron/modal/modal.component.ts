@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, OnDestroy} from '@angular/core';
-import { CrComService } from '../crcom.service';
+declare var CrComLib: any;
 
 @Component({
   selector: 'app-modal',
@@ -11,16 +11,19 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() VisJoin: number;
   public visible: boolean;
 
-  constructor(private el: ElementRef, private crcom: CrComService) { }
+  constructor(private el: ElementRef ) { }
   ngOnInit() {
-    this.showHide();
-    this.crcom.update.subscribe(() => this.showHide());
+    // this.showHide();
+    // this.crcom.update.subscribe(() => this.showHide());
+
+    this.showHide(CrComLib.getState('b', String(this.VisJoin)));
+    CrComLib.subscribeState('b', String(this.VisJoin), (v) => { this.showHide(v); } );
   }
   ngOnDestroy() {
-    this.crcom.update.unsubscribe();
+
   }
-  showHide() {
-    if (this.crcom.digFB[this.VisJoin] === true) { this.visible = true; console.log('show'); }
+  showHide(visState: boolean) {
+    if (visState) { this.visible = true; }
     else { this.visible = false; }
   }
 }

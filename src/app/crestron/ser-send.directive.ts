@@ -1,5 +1,4 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-// import { CrComService } from '../crcom.service';
 declare var CrComLib: any;
 
 @Directive({
@@ -12,7 +11,6 @@ export class SerSendDirective {
   constructor(private el: ElementRef) { }
 
   @HostListener('input') onInput(){
-    // this.crcom.ser_send(this.join, this.el.nativeElement.value);
     CrComLib.publishEvent('s', String(this.join), this.el.nativeElement.value);
   }
 }

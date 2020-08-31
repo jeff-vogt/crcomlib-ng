@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CrComService } from './crestron/crcom.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +7,6 @@ import { CrComService } from './crestron/crcom.service';
 })
 export class AppComponent {
   title = 'crcom-basic';
-  constructor(public crcom: CrComService) { }
+  constructor() { }
 
 }
