@@ -1,0 +1,26 @@
+<div>A button that sends data to digital join 10 and changes CSS class to "active" when digital FB join 10 is high:</div>
+<button [DigPress]="10" [DigFB]="10">enable -></button><br>
+<div>A button that sends/receives join 11 and is enabled when digital FB join 10 is high:</div>
+<button [DigPress]="11" [DigFB]="11" [DigEnable]="10">show -></button><br>
+<div>A button that sends/receives join 12 and is visible when digital FB join 11 is high:</div>
+<button [DigPress]="12" [DigFB]="12" [DigVisible]="11">join 12</button>
+<br>
+<div>An input slider that sends data to analog join 11:</div>
+<input type="range" min="0" max="100" step="5" [AnaSend]="11">
+<br>
+<div>A read-only slider (gauge) on analog feedback join 11:</div>
+<input type="range" min="0" max="100" [AnaFB]="11" style="pointer-events:none">
+<div>A text input box that sends data to serial join 11:</div>
+<input type="text" [SerSend]="11">
+<div>A span element that displays serial fb join 11:</div>
+<span [SerFB]="11"></span>
+<div>This button opens a modal/popup on FB join 13:</div>
+<button [DigPress]="13" [DigFB]="13">modal!</button><br>
+<app-modal [VisJoin]="13">
+  <div style="width: 300px; height: 75px; margin: auto; background: gray;">
+      <button [DigPress]="13" style="float: right;">Close</button><br>
+      <div>Button press sends join 13 to close this modal</div>
+  </div>
+</app-modal>
+<div>Digital 10: {{crcom.digFB[10]}}, Analog 11: {{crcom.anaFB[11]}}, Serial 11: {{crcom.serFB[11]}}</div>
+<div>{{crcom.message}}</div>
