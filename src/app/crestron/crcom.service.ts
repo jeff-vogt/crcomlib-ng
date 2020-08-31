@@ -19,13 +19,12 @@ export class CrComService {
       CrComLib.subscribeState('s', String(i), (v) => { this.serFB[i] = v; } );
     }
     this.message = 'Initializing...';
-    setInterval(() => this.osc(), 10000);
+    setInterval(() => this.osc(), 100);
   }
 
 
   private osc(){
-    this.message = 'In Update';
-    // CrComLib.publishEvent('b', '11', true);
+
     this.update.emit();
   }
 }
